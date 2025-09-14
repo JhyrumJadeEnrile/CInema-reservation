@@ -41,7 +41,7 @@ public class Main {
                     System.out.print("Enter email: ");
                     String email = sc.nextLine();
                     int seat = getValidInt(sc, "Enter seat number: ");
-                    System.out.println("The date format should be like this: 01/02/2000");
+                    System.out.println("The date format should be like this: MM/DD/YYYYgit ");
                     int day = getValidInt(sc, "Enter day: ");
                     int month = getValidInt(sc, "Enter month: ");
                     int year = getValidInt(sc, "Enter year: ");

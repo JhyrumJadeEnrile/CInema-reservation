@@ -1,8 +1,16 @@
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+
 
 public class Crud{
     ArrayList<reservationDetails> reservations = new ArrayList<>();
+    private FileHandler fileHandler;
 
+    public Crud() {
+        this.fileHandler = new FileHandler();
+        this.reservations = new ArrayList<>(fileHandler.loadReservations());
+    } 
+    
     //create
     public void addReservation(reservationDetails reservation){
         reservations.add(reservation);
