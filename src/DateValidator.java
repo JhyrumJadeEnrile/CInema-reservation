@@ -1,22 +1,21 @@
-
-    public class DateValidator {
-
-        public static boolean isValidDay(int day, int month, int year) {
-            int maxDays = 31;
-
-            switch (month) {
-                case 2:
-                    maxDays = 28;
-                    break;
-                case 4: case 6: case 9: case 11:
-                    maxDays = 30;
-                    break;
-                default:
-                    maxDays = 31;
+class DateValidator {
+    public static boolean isLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+    public static boolean isValidDay(int day, int month, int year) {
+        if (day < 1) {
+            return false;
+        }
+        if (month == 2) {
+            if (isLeapYear(year)) {
+                return day <= 29;
+            } else {
+                return day <= 28;
             }
-
-            return day >= 1 && day <= maxDays;
+        } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+            return day <= 30;
+        } else {
+            return day <= 31;
         }
     }
-
-
+}

@@ -59,86 +59,125 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Crud crud = new Crud();
         int choice;
+        int moviech;
 
         do {
-            System.out.println("\n===== MOVIE THEATER RESERVATION SYSTEM =====");
-            System.out.println("1. Add Reservation");
-            System.out.println("2. View Reservations");
-            System.out.println("3. Update Reservation");
-            System.out.println("4. Delete Reservation");
-            System.out.println("5. Exit");
+            System.out.println("Please Select a Movie");
+            System.out.println("1. Wednesday");
+            System.out.println("2. Everything Everywhere All At One");
+            System.out.println("3. Pedro Penduko");
+            System.out.println("4. Avengers Doom's Day");
 
-            choice = getValidInt(sc, "Enter your choice: ");
+            moviech = getValidInt(sc, "Enter your choice: ");
 
-            switch (choice) {
+            String movieTitle = "";
+            switch (moviech) {
                 case 1:
-                    System.out.print("Enter name: ");
-                    String name = sc.nextLine();
-                    String email = getValidEmail(sc);
-                    int seat = getValidInt(sc, "Enter seat number: ");
-                    System.out.println("The date format should be like this: MM/DD/YYYY");
-
-                    int month = getValidMonth(sc);
-                    int day = getValidDay(sc, month, 2025); // year needed here temporarily
-                    int year = getValidYear(sc);
-                    // validate again after year is known
-                    while (!DateValidator.isValidDay(day, month, year)) {
-                        System.out.println("Invalid day for the given month/year! Try again.");
-                        day = getValidDay(sc, month, year);
-                    }
-
-                    reservationDetails r = new reservationDetails(name, email, seat, day, month, year);
-                    crud.addReservation(r);
+                    movieTitle = "Wednesday";
                     break;
-
                 case 2:
-                    crud.viewReservations();
+                    movieTitle = "Everything Everywhere All At Once";
                     break;
-
                 case 3:
-                    crud.viewReservations();
-                    int indexToUpdate = getValidInt(sc, "Enter reservation number to update: ") - 1;
-                    if (indexToUpdate >= 0 && indexToUpdate < crud.reservations.size()) {
-                        int newSeat = getValidInt(sc, "Enter new seat number: ");
-                        int newMonth = getValidMonth(sc);
-                        int newDay = getValidDay(sc, newMonth, 2025); // placeholder
-                        int newYear = getValidYear(sc);
-                        while (!DateValidator.isValidDay(newDay, newMonth, newYear)) {
-                            System.out.println("Invalid day for the given month/year! Try again.");
-                            newDay = getValidDay(sc, newMonth, newYear);
-                        }
-                        crud.updateReservation(indexToUpdate, newSeat, newDay, newMonth, newYear);
-                    } else {
-                        System.out.println("Invalid reservation number.");
-                    }
+                    movieTitle = "Pedro Penduko";
                     break;
-
                 case 4:
-                    crud.viewReservations();
-                    int indexToDelete = getValidInt(sc, "Enter reservation number to delete: ") - 1;
-                    if (indexToDelete >= 0 && indexToDelete < crud.reservations.size()) {
-                        System.out.print("Are you sure you want to delete this reservation? (yes/no): ");
-                        String confirm = sc.nextLine();
-                        if (confirm.equalsIgnoreCase("yes")) {
-                            crud.deleteReservation(indexToDelete);
-                        } else {
-                            System.out.println("Deletion cancelled.");
-                        }
-                    } else {
-                        System.out.println("Invalid reservation number.");
-                    }
+                    movieTitle = "Avengers Doom's Day";
                     break;
-
-                case 5:
-                    System.out.println("Exiting... Thank you!");
-                    break;
-
                 default:
-                    System.out.println("Invalid choice! Please try again.");
+                    System.out.println("Invalid movie choice! Please try again.");
+                    continue;
             }
-        } while (choice != 5);
 
-        sc.close();
+            do {
+                System.out.println("\n===== MOVIE THEATER RESERVATION SYSTEM (" + movieTitle + ") =====");
+                System.out.println("1. Add Reservation");
+                System.out.println("2. View Reservations");
+                System.out.println("3. Update Reservation");
+                System.out.println("4. Delete Reservation");
+                System.out.println("5. Change Movie");
+                System.out.println("6. Exit");
+
+                choice = getValidInt(sc, "Enter your choice: ");
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter name: ");
+                        String name = sc.nextLine();
+                        String email = getValidEmail(sc);
+                        System.out.println("The date format should be like this: MM/DD/YYYY");
+
+                        int month = getValidMonth(sc);
+                        int day = getValidDay(sc, month, 2025);
+                        int year = getValidYear(sc);
+                        while (!DateValidator.isValidDay(day, month, year)) {
+                            System.out.println("Invalid day for the given month/year! Try again.");
+                            day = getValidDay(sc, month, year);
+                        }
+
+                        int seat;
+                        do {
+                            seat = getValidInt(sc, "Enter seat number: ");
+                            if (crud.isSeatTaken(movieTitle, seat, day, month, year)) {
+                                System.out.println("This seat is already taken for the selected movie and date. Please choose another one.");
+                            } else {
+                                break;
+                            }
+                        } while (true);
+
+                        reservationDetails r = new reservationDetails(name, email, seat, day, month, year, movieTitle);
+                        crud.addReservation(r);
+                        break;
+
+                    case 2:
+                        crud.viewReservations(movieTitle);
+                        break;
+
+                    case 3:
+                        crud.viewReservations(movieTitle);
+                        int indexToUpdate = getValidInt(sc, "Enter reservation number to update: ") - 1;
+                        if (indexToUpdate >= 0 && indexToUpdate < crud.getReservationsForMovie(movieTitle).size()) {
+                            int newSeat = getValidInt(sc, "Enter new seat number: ");
+                            int newMonth = getValidMonth(sc);
+                            int newDay = getValidDay(sc, newMonth, 2025);
+                            int newYear = getValidYear(sc);
+                            while (!DateValidator.isValidDay(newDay, newMonth, newYear)) {
+                                System.out.println("Invalid day for the given month/year! Try again.");
+                                newDay = getValidDay(sc, newMonth, newYear);
+                            }
+                            crud.updateReservation(indexToUpdate, newSeat, newDay, newMonth, newYear, movieTitle);
+                        } else {
+                            System.out.println("Invalid reservation number.");
+                        }
+                        break;
+
+                    case 4:
+                        crud.viewReservations(movieTitle);
+                        int indexToDelete = getValidInt(sc, "Enter reservation number to delete: ") - 1;
+                        if (indexToDelete >= 0 && indexToDelete < crud.getReservationsForMovie(movieTitle).size()) {
+                            System.out.print("Are you sure you want to delete this reservation? (yes/no): ");
+                            String confirm = sc.nextLine();
+                            if (confirm.equalsIgnoreCase("yes")) {
+                                crud.deleteReservation(indexToDelete, movieTitle);
+                            } else {
+                                System.out.println("Deletion cancelled.");
+                            }
+                        } else {
+                            System.out.println("Invalid reservation number.");
+                        }
+                        break;
+                    case 5:
+                        System.out.println("Changing movie...");
+                        break;
+                    case 6:
+                        System.out.println("Exiting... Thank you!");
+                        sc.close();
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Invalid choice! Please try again.");
+                }
+            } while (choice != 5 && choice != 6);
+        } while (true);
     }
 }
-
