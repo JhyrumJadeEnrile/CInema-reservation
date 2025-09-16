@@ -1,21 +1,18 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
+// Class responsible for saving/loading
 public class FileHandler {
-
     private static final String FILE_NAME = "reserved.txt";
 
+    // Save all reservations to file
     public void saveReservations(Map<String, List<reservationDetails>> reservationsByMovie) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (Map.Entry<String, List<reservationDetails>> entry : reservationsByMovie.entrySet()) {
                 String movieTitle = entry.getKey();
-                List<reservationDetails> reservations = entry.getValue();
-                for (reservationDetails r : reservations) {
-                    // Include movieTitle in the saved data
-                    String line = r.getName() + "," + r.getEmail() + "," + r.getSeatNumber() + "," + r.getDay() + "," + r.getMonth() + "," + r.getYear() + "," + movieTitle;
+                for (reservationDetails r : entry.getValue()) {
+                    String line = r.getName() + "," + r.getEmail() + "," + r.getSeatNumber() +
+                            "," + r.getDay() + "," + r.getMonth() + "," + r.getYear() + "," + movieTitle;
                     writer.write(line);
                     writer.newLine();
                 }
@@ -25,13 +22,13 @@ public class FileHandler {
         }
     }
 
+    // Load all reservations from file
     public Map<String, List<reservationDetails>> loadReservations() {
         Map<String, List<reservationDetails>> reservationsByMovie = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                // The new line format will have 7 parts
                 if (parts.length == 7) {
                     String name = parts[0].trim();
                     String email = parts[1].trim();

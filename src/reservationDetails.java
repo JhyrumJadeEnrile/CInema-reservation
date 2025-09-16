@@ -1,15 +1,15 @@
-class reservationDetails {
-    private String name;
-    private String email;
+// Class representing a reservation, extends person
+public class reservationDetails extends person {
     private int seatNumber;
     private int day;
     private int month;
     private int year;
     private String movieTitle;
 
-    public reservationDetails(String name, String email, int seatNumber, int day, int month, int year, String movieTitle) {
-        this.name = name;
-        this.email = email;
+    // Constructor
+    public reservationDetails(String name, String email, int seatNumber,
+                              int day, int month, int year, String movieTitle) {
+        super(name, email); // Call parent constructor
         this.seatNumber = seatNumber;
         this.day = day;
         this.month = month;
@@ -17,39 +17,32 @@ class reservationDetails {
         this.movieTitle = movieTitle;
     }
 
-    // Getters for all fields
-    public String getName() {
-        return name;
-    }
-    public String getEmail() {
-        return email;
-    }
+    // Getters
     public int getSeatNumber() {
-        return seatNumber;
-    }
+        return seatNumber; }
     public int getDay() {
-        return day;
-    }
+        return day; }
     public int getMonth() {
-        return month;
-    }
+        return month; }
     public int getYear() {
-        return year;
-    }
+        return year; }
     public String getMovieTitle() {
-        return movieTitle;
-    }
+        return movieTitle; }
 
-    // Setters for updating
+    // Setters
     public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber; }
-    public void setDay(int day) { this.day = day; }
-    public void setMonth(int month) { this.month = month; }
-    public void setYear(int year) { this.year = year; }
+    public void setDay(int day) {
+        this.day = day; }
+    public void setMonth(int month) {
+        this.month = month; }
+    public void setYear(int year) {
+        this.year = year; }
 
+    // Implementation of abstract method
     @Override
-    public String toString() {
-        return "Name: " + name + ", Email: " + email + ", Seat: " + seatNumber + ", Date: " + month + "/" + day + "/" + year;
+    public void personalInfo() {
+        System.out.println("Customer: " + getName() + " | Email: " + getEmail());
     }
-}
 
+}

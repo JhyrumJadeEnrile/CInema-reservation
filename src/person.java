@@ -1,3 +1,4 @@
+// Abstract class representing a person
 public abstract class person {
     private String name;
     private String email;
@@ -10,20 +11,16 @@ public abstract class person {
 
     // Getters
     public String getName() {
-        return name;
-    }
+        return name; }
     public String getEmail() {
-        return email;
-    }
+        return email; }
 
     // Setters
     public void setName(String name) {
-        this.name = name;
-    }
+        this.name = name; }
     public void setEmail(String email) {
-        this.email = email;
-    }
+        this.email = email; }
 
-    // Abstract method
+    // Abstract method to display personal info
     public abstract void personalInfo();
 }

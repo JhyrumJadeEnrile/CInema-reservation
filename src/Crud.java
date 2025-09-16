@@ -1,27 +1,26 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+// Class to handle CRUD operations for reservations
 public class Crud {
     private FileHandler fileHandler;
-    private Map<String, List<reservationDetails>> reservationsByMovie = new HashMap<>();
+    private Map<String, List<reservationDetails>> reservationsByMovie;
 
+    // Constructor
     public Crud() {
         this.fileHandler = new FileHandler();
         this.reservationsByMovie = fileHandler.loadReservations();
     }
 
-    // Create
+    // Add a reservation
     public void addReservation(reservationDetails reservation) {
         String movieTitle = reservation.getMovieTitle();
         reservationsByMovie.putIfAbsent(movieTitle, new ArrayList<>());
         reservationsByMovie.get(movieTitle).add(reservation);
         System.out.println("Reservation added successfully!");
-        fileHandler.saveReservations(reservationsByMovie); // Save after adding
+        fileHandler.saveReservations(reservationsByMovie);
     }
 
-    // Read
+    // View all reservations for a movie
     public void viewReservations(String movieTitle) {
         List<reservationDetails> reservations = reservationsByMovie.getOrDefault(movieTitle, new ArrayList<>());
         if (reservations.isEmpty()) {
@@ -29,12 +28,12 @@ public class Crud {
         } else {
             System.out.println("\n--- Reservation List for " + movieTitle + " ---");
             for (int i = 0; i < reservations.size(); i++) {
-                System.out.println("[" + (i + 1) + "]");
+                System.out.println("[" + (i + 1) + "] " + reservations.get(i));
             }
         }
     }
 
-    // Update
+    // Update a reservation
     public void updateReservation(int index, int newSeat, int newDay, int newMonth, int newYear, String movieTitle) {
         List<reservationDetails> reservations = reservationsByMovie.get(movieTitle);
         if (reservations != null && index >= 0 && index < reservations.size()) {
@@ -43,31 +42,31 @@ public class Crud {
             r.setDay(newDay);
             r.setMonth(newMonth);
             r.setYear(newYear);
-            fileHandler.saveReservations(reservationsByMovie); // Save updated data
+            fileHandler.saveReservations(reservationsByMovie);
             System.out.println("Reservation updated successfully.");
         } else {
             System.out.println("Invalid reservation index.");
         }
     }
 
-    // Delete
+    // Delete a reservation
     public void deleteReservation(int index, String movieTitle) {
         List<reservationDetails> reservations = reservationsByMovie.get(movieTitle);
         if (reservations != null && index >= 0 && index < reservations.size()) {
             reservations.remove(index);
-            fileHandler.saveReservations(reservationsByMovie); // Save after deletion
+            fileHandler.saveReservations(reservationsByMovie);
             System.out.println("Reservation deleted successfully.");
         } else {
             System.out.println("Invalid reservation index.");
         }
     }
 
-    // Helper method to get the list of reservations for a movie
+    // Get reservations for a movie
     public List<reservationDetails> getReservationsForMovie(String movieTitle) {
         return reservationsByMovie.getOrDefault(movieTitle, new ArrayList<>());
     }
 
-    // Checks if a seat is taken for a specific movie and date
+    // Check if a seat is taken
     public boolean isSeatTaken(String movieTitle, int seatNumber, int day, int month, int year) {
         List<reservationDetails> reservations = reservationsByMovie.getOrDefault(movieTitle, new ArrayList<>());
         for (reservationDetails reservation : reservations) {
