@@ -45,4 +45,5 @@ public class reservationDetails extends person{
         System.out.println("Seat Number: " + seatNumber);
         System.out.println("Date: " + day + "/" + month + "/" + year);
     }
+
 }

@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class fileHandler {
+public class FileHandler {
     
     private static final String FILE_NAME = "reserved.txt";
 
