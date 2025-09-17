@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.Scanner;
+import java.util.InputMismatchException;
+
 
 public abstract class ReservationSystem {
    Scanner sc = new Scanner(System.in);
