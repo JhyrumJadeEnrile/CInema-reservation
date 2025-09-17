@@ -1,7 +1,7 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+
 
 // Class to handle CRUD operations for reservations
 public class Crud {
@@ -14,13 +14,26 @@ public class Crud {
         this.reservationsByMovie = fileHandler.loadReservations();
     }
 
-    // Add a reservation
+    // Create reservation
     public void addReservation(reservationDetails reservation) {
         String movieTitle = reservation.getMovieTitle();
         reservationsByMovie.putIfAbsent(movieTitle, new ArrayList<>());
+
+        // check if seat is already taken for that movie and date
+        if (isSeatTaken(movieTitle,
+                reservation.getSeatNumber(),
+                reservation.getDay(),
+                reservation.getMonth(),
+                reservation.getYear())) {
+            System.out.println("❌ Seat " + reservation.getSeatNumber() + " is already taken for "
+                    + movieTitle + " on " + reservation.getMonth() + "/" + reservation.getDay() + "/" + reservation.getYear());
+            return;
+        }
+
+        // if free, add reservation
         reservationsByMovie.get(movieTitle).add(reservation);
-        System.out.println("Reservation added successfully!");
         fileHandler.saveReservations(reservationsByMovie);
+        System.out.println("✅ Reservation added successfully!");
     }
 
     // View all reservations for a movie

@@ -21,6 +21,4 @@ public abstract class person {
     public void setEmail(String email) {
         this.email = email; }
 
-    // Abstract method to display personal info
-    public abstract void personalInfo();
 }

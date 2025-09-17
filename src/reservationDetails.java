@@ -39,10 +39,14 @@ public class reservationDetails extends person {
     public void setYear(int year) {
         this.year = year; }
 
-    // Implementation of abstract method
     @Override
-    public void personalInfo() {
-        System.out.println("Customer: " + getName() + " | Email: " + getEmail());
+    public String toString() {
+        return "Name: " + getName() +
+                ", Email: " + getEmail() +
+                ", Seat: " + seatNumber +
+                ", Date: " + month + "/" + day + "/" + year +
+                ", Movie: " + movieTitle;
     }
+
 
 }
